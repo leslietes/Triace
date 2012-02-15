@@ -1,0 +1,30 @@
+<table id="products">
+  <thead>
+    <th>Code</th>
+    <th>Name</th>
+    <th>Count/Pack</th>
+    <% if current_user.is_admin? %>
+    <th>Unit Price</th>
+    <th>Actions</th>
+    <% end %>
+  </thead>
+  <tbody>
+    <% @products.each do |c| %>
+    <tr>
+      <td class="center"><%= c.product_code %></td>
+      <td><%= c.name %></td>
+      <td class="center"><%= c.count_per_pack %></td>
+      <% if current_user.is_admin? %>
+      <td class="right"><%= number_to_currency(c.distributors_price,:unit => '') %></td>
+      <td class="center">
+        <%= link_to 'Show', product_url(c) %>
+        <%= link_to 'Edit', edit_product_url(c) %>
+        <%# link_to 'Delete', product_url(c), :method => :delete, :confirm => "Are you sure you want to remove #{c.name}?" %>
+      </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="clear"></div>
+<br/><%= link_to 'New', new_product_url %>

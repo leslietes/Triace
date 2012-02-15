@@ -1,0 +1,33 @@
+<h2>Notes</h2>
+<%= link_to 'New', new_note_url %><br/><br/>
+<table>
+<thead>
+<th>Date</th>
+<th>Quantity</th>
+<th>Unit</th>
+<th>Product</th>
+<th>Price</th>
+<th>Explanation</th>
+<th>Close</th>
+</thead>
+<tbody>
+<% @notes.each do |note| %>
+<tr>
+<td class="center"><%= display_date(note.created_at) %></td>
+<td class="center"><%= note.quantity %></td>
+<td class="center"><%= note.unit %></td>
+<td><%= note.product.nil? ? "" : note.product.name %></td>
+<td class="right"><%= display_amount(note.amount) %></td>
+<td><%= note.explanation %></td>
+<td class="center">
+<% if !note.close? %>
+<%= link_to 'Close', close_note_url(note) %> <%= link_to 'Edit', edit_note_url(note) %> <%= link_to 'Delete', note, :method => :delete, :confirm => "Are you sure?" %>
+<% end %>
+</td>
+</tr>
+<% end %>
+</tbody>
+</table>
+
+<br/>
+<%= link_to 'New', new_note_url %>

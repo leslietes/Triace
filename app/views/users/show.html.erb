@@ -1,0 +1,27 @@
+<div id="panel1">
+	<h3>User<span><%= link_to 'Edit', edit_user_path(@user) %> 
+	<%= link_to 'Delete', user_path(@user), :method => :delete, :confirm => "Are you sure?" %>
+	</span></h3>
+	
+	<div class="data">
+		<p>
+			<%= label_tag :login %>
+			<%= @user.login %>	
+		</p>
+		<p>
+			<%= label_tag :name %>
+			<%= @user.name %>
+		</p>
+		<p>
+			<%= label_tag :email %>
+			<%= @user.email %>
+		</p>
+		<p>
+			<%= label_tag :role %>
+			<%= @user.role %>
+		</p>
+	</div>
+	
+</div>	
+
+<div class="clear"></div>

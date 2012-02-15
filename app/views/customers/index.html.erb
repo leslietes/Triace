@@ -1,0 +1,40 @@
+<%= link_to 'New', new_customer_url %><br/><br/>
+<div id="fixed">
+<table id="customers">
+  <thead>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Contact No</th>
+    <th>Fax No</th>
+    <th>Mobile No</th>
+    <th>Contact Person</th>
+    <th>Terms</th>
+    <th>Details</th>
+	<% if current_user.is_admin? %>
+	<th>Actions</th>
+	<% end %>
+  </thead>
+  <tbody>
+    <% @customers.each do |c| %>
+    <tr>
+      <td><%= c.name %></td>
+      <td><%= c.address %></td>
+      <td><%= c.contact_no %></td>
+      <td><%= c.fax_no %></td>
+      <td><%= c.mobile_no %></td>
+      <td><%= c.contact_person %></td>
+      <td><%= c.terms %></td>
+      <td><%= c.details %></td>
+	  <% if current_user.is_admin? %>
+      <td>
+        <%= link_to 'Show', customer_url(c) %>
+        <%= link_to 'Edit', edit_customer_url(c) %>
+      </td>
+	  <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+<div class="clear"></div>
+<br/><%= link_to 'New', new_customer_url %>

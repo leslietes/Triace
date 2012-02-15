@@ -1,0 +1,36 @@
+<h1>Inventory as of <%= Date.today %></h1>
+<br/><%= link_to 'Print', inventories_url(:pdf), :id => 'no_print' %> <%= link_to 'Close Inventory', close_inventories_url, :id => 'no_print' %>
+<br/>
+<% total = 0 %>
+
+<table id="inventories">
+	<thead>
+		<th>Name</th>
+		<th>Balance</th>
+<th>Count/Pack</th>
+<th>Boxes</th>
+<th>Pieces</th>
+<th>Unit Price</th>
+<th>Total</th>
+		<th id="no_print">Actions</th>
+	</thead>
+	<tbody>
+		<% @inventories.each do |i| %>
+		<tr>
+			<td class="left"><%= i.name %></td>
+			<td class="center"><%= i.balance %></td>
+                        <td class="center"><%= i.count_per_pack %></td>
+                        <td class="center"><%= i.balance / i.count_per_pack %></td>
+                        <td class="center"><%= i.balance % i.count_per_pack %></td>
+                        <td class="right"><%= number_to_currency(i.distributors_price, :unit => '') %></td>
+<td class="right"><% subtotal = i.balance * i.distributors_price%> <%= number_to_currency(subtotal,:unit => '') %></td>
+			<td class="center" id="no_print"><%= link_to 'Details', inventory_url(i.id) %> <%= link_to 'Recalculate', recalculate_inventory_url(i.id)%> </td>
+		</tr><% total = total + subtotal %>
+		<% end %>
+	</tbody>
+</table>
+
+
+<div class="clear"></div>
+<%= number_to_currency(total, :unit => '') %>
+<br/><%= link_to 'Print', inventories_url(:pdf), :id => 'no_print' %> <%= link_to 'Close Inventory', close_inventories_url, :id => 'no_print' %>

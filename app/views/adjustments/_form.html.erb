@@ -1,0 +1,36 @@
+<%= form_for @adjustment do |f| %>
+  <% if @adjustment.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@adjustment.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @adjustment.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+  	<%= f.label :adjustment_date %>
+	<%= f.text_field :adjustment_date, :class => 'calendar' %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :customer %>
+	<%= f.select :customer_id, options_from_collection_for_select(@customers, "id","name", @adjustment.customer_id), :include_blank => true %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :total_amount %>
+	<%= f.text_field :total_amount %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :explanation %>
+	<%= f.text_field :explanation %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', adjustments_path %>
+  </div>
+<% end %>

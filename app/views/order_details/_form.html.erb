@@ -1,0 +1,41 @@
+<%= form_for [@order,@order_detail] do |f| %>
+  <% if @order_detail.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@order_detail.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @order_detail.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+  	<%= f.label :order_id %>
+	<%= f.text_field :order_id, :readonly => 'readonly' %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :quantity %>
+	<%= f.text_field :quantity %>
+  </div>
+  
+  <div class="field">
+  	<label>Unit</label>
+	<%= f.text_field :unit %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :product_id %>
+        <%= f.select :product_id, options_from_collection_for_select(@products, "id","name",@order_detail.product_id), :include_blank => true %>
+  </div>
+  
+  <div class="field">
+  	<label>Unit Price</label>
+	<%= f.text_field :unit_price %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', order_path(@order) %>
+  </div>
+<% end %>

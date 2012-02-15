@@ -1,0 +1,46 @@
+<%= form_for [@adjustment,@adjustment_detail] do |f| %>
+  <% if @adjustment_detail.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@adjustment_detail.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @adjustment_detail.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+  	<%= f.label :adjustment_id %>
+	<%= f.text_field :adjustment_id, :readonly => 'readonly' %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :quantity_in %>
+	<%= f.text_field :quantity_in %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :quantity_out %>
+	<%= f.text_field :quantity_out %>
+  </div>
+
+  <div class="field">
+  	<label>Unit</label>
+	<%= f.text_field :unit %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :product_id %>
+        <%= f.select :product_id, options_from_collection_for_select(@products, "id","name",@adjustment_detail.product_id), :include_blank => true %>
+  </div>
+  
+  <div class="field">
+  	<label>Unit Price</label>
+	<%= f.text_field :unit_price %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', adjustment_path(@adjustment) %>
+  </div>
+<% end %>

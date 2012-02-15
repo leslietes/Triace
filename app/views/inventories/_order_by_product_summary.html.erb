@@ -1,0 +1,29 @@
+<% @products.each do |o| %><br/>
+<p><b><%= o.name %><% count = o.count_per_pack %></b></p>
+<table>
+  <thead>
+    <th style="width:150px">Date</th>
+    <th style="width:50px">OS No</th>
+    <th style="width:200px">Customer</th>
+    <th style="width:50px">Quantity</th>
+    <th style="width:50px">Boxes</th>
+    <th style="width:50px">Pieces</th>
+    <th style="width:100px">Unit Price</th>
+  </thead>
+  <tbody>
+    <% o.order_details.each do |od| %>
+    <tr>
+      <td class="center"><%= display_date(od.order.order_date) %></td>
+      <td class="center"><%= od.order.id %></td>
+      <td><%= od.order.customer.name %></td>
+      <td class="center"><%= od.quantity %></td>
+      <td class="center"><%= od.quantity / count %></td>
+      <td class="center"><%= od.quantity % count %></td>
+      <td class="right"><%= display_amount(od.unit_price) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>
+

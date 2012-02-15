@@ -1,0 +1,124 @@
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require_self
+ *= require_tree . 
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background:transparent;
+	color:#333;
+	font-size:12px;
+	font-weight:normal;
+	font-variant:normal;
+	font-style:normal;
+	line-height:1.6em;
+	font-family:Arial, Helvetica, sans-serif; 
+}
+
+ul li { list-style:none; }
+a { display:inline-block;text-decoration:none;color:#1133AA; }
+form { padding:0px;line-height:2em; }
+form p { padding:0.5em 0; }
+label { width:90px;display:inline-block;text-align:right;font-weight:bold;padding-right:10px; }
+input { width:250px;border-radius:0;border:1px solid #ccc; }
+input[type='checkbox'] { margin-top:5px; }
+input[type='submit'] { padding:5px;margin:10px 0;color:#eee;border-radius:5px;background-color:#4C7CCF;font-weight:bold;width:80px; }
+select { background-color:#fff;border:1px solid #ccc;width:253px; }
+textarea { height:100px;width:250px;border:1px solid #ccc; }
+#readonly { background-color:#EEEEDD; }
+
+.errors { margin:10px;padding:10px;width:450px;border: 2px solid red;background-color: #f0f0f0; }
+.errors h2 { padding-bottom:5px; }
+ul.errors li { font-size:12px;list-style:square inside none; }
+.field_with_errors input { padding:0px;background-color:red; }
+ 
+#login_form form label { text-align:left; }  
+
+.notice { background-color:#E0ECFF;padding:10px;margin:10px 0; }
+.alert  { background-color:#FFCCCC;padding:10px;margin:10px 0; }
+.data, #actions { padding:10px; }
+.clear { clear:both;height:0;overflow:hidden; }
+.center { text-align:center;}
+.left { text-align:left; }
+.right { text-align:right; }
+.small { font-size:80% }
+
+/* login area */
+#pre_header_container { background-color:#222;margin-bottom:15px;position:relative;border:1px solid green; }
+#pre_header { margin:0 auto;text-align:right;width:960px; }
+#pre_header ul.navigation { float:right;margin-bottom:5px;margin-top:5px;margin-right:0;color:#fff; }
+#pre_header ul.navigation a { color:#fff;font-weight:bold; }
+
+.container { width: 960px;border: 1px solid #c1c1c1;margin: auto;float: none;background: #fff; }
+
+#header { background-color: #4c7ccf;color: #eee;height: 75px;z-index:5; }
+
+#logo { font-size:24px;font-weight:normal;width:560px;line-height:1.4em;overflow:hidden;padding-left:10px;padding-top:10px; }
+
+#main { padding:10px; }
+#fixed { overflow:scroll;height:390px; }
+
+#panel1 { border:1px solid #dedede;width:100%;float:left;min-height:150px; }
+#panel1 h3 { border-bottom:1px solid #dedede;padding:10px; }
+#panel1 h3 span { float:right;font-weight:normal;font-size:10px; }
+
+table { width:100%;}
+table, th, td { border:1px solid #ccc;border-collapse:collapse;padding:0 3px; }
+ 
+input#narrow { width:100%;margin:auto;display:block; }
+input[type='submit']#narrow { display:inline-block;font-size:11px;width:65px;margin:0;font-weight:normal;background-color:#fff;padding:0;color:#333;-moz-border-radius:0;}
+select#narrow { width:100%;}
+
+table.lists { border-collapse:collapse;border-spacing:0;width:100%; }
+table.lists, table.lists th, table.lists td { border:1px solid #dedede;padding:10px 0;height:50px;vertical-align:middle;}
+table.lists td { padding:0 3px; }
+table.lists td#actions { width:150px;text-align:center; }
+
+.ui-datepicker-calendar { font-size:10px!important; }
+
+table#no_border, table#no_border th, table#no_border td { border:none; }
+/*table#borders, table#no_border th, table#no_border td { border:1px solid #ccc; }*/
+
+table#customers, table#products, table#orders, table#inventories, table#payments {clear:both;margin-top:10px;}
+#customers_wrapper, #products_wrapper, #orders_wrapper, #inventories_wrapper, #payments_wrapper {padding:0;}
+#customers_info, #products_info, #orders_info, #inventories_info, #payments_info {margin-top:10px;margin-bottom:10px;}
+
+table.no_borders, table.no_borders th, table.no_borders td {border:none;width:auto;}
+
+.window { border:1px solid #dedede;position:relative;width:20%;padding:10px;float:left;margin-right:10px;}
+
+@media print {
+  body {
+    background-color: #FFF;font-size:11px;
+  }
+  h3 { text-align:center;}
+  h3 span { clear:all;}
+
+  table, th, td { padding:3px 5px;font-size:11px;}
+  
+  #container {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  
+  #line_items {
+    page-break-before: always;
+  }
+  
+  #no_print {
+    display: none;
+  }
+  #panel1 { border:none;}
+  #panel1 h3 { border:none;}
+#reports {page-break-inside:avoid; }
+  /*.signature { position:absolute;bottom:10px; }*/
+}

@@ -1,0 +1,56 @@
+<%= form_for @product do |f| %>
+  <% if @product.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@product.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @product.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+  	<%= f.label :product_code %>
+	<%= f.text_field :product_code %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :name %>
+	<%= f.text_field :name %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :size %>
+	<%= f.text_field :size %>
+  </div>
+  
+  <div class="field">
+  	<label>Case/Pack</label>
+	<%= f.text_field :count_per_pack %>
+  </div>
+  
+  <div class="field">
+  	<label>Distributor's Price</label>
+	<%= f.text_field :distributors_price %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :wholesale_price %>
+	<%= f.text_field :wholesale_price %>
+  </div>
+  
+  <div class="field">
+  	<label>SRP</label>
+	<%= f.text_field :srp %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :expiry_date %>
+	<%= f.text_field :expiry_date %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', products_path %>
+  </div>
+<% end %>

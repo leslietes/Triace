@@ -1,0 +1,29 @@
+<h2>Adjustments</h2><br/>
+<table>
+  <thead>
+    <th>Date</th>
+    <th>Customer</th>
+    <th>Total Amount</th>
+    <th>Explanation</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% @adjustments.each do |a| %>
+    <tr>
+      <td class="center"><%= display_date(a.adjustment_date) %></td>
+      <td><%= a.customer.name %></td>
+      <td class="right"><%= number_to_currency(a.total_amount, :unit => '') %></td>
+      <td class="center"><%= a.explanation %></td>
+      <td class="center">
+<%= link_to 'Show', adjustment_url(a)%> 
+<%= link_to 'Print', adjustment_url(a, :pdf)%> <%= link_to 'Edit', edit_adjustment_url(a) %>
+
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<%= link_to 'New', new_adjustment_url %>
+

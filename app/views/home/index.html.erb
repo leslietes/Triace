@@ -1,0 +1,21 @@
+<div class="window">
+<h3>Pending Deliveries</h3>
+<p><%= display_amount(@order) %></p>
+<%= link_to 'View Deliveries', orders_url %>
+</div>
+
+<div class="window">
+<h3>Pending Payments</h3>
+<p><%= display_amount(@payment) %></p>
+<%= link_to 'View Payments', payments_url %>
+</div>
+
+<div class="window">
+<h3>Total Inventory</h3>
+<p><%= display_amount(@inv) %></p>
+<%= link_to 'View Inventory', inventories_url %>
+</div>
+
+
+<div class="clear"></div>
+

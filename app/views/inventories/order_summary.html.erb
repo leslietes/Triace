@@ -1,0 +1,99 @@
+<h2>Orders By Date</h2><br/>
+<div id="no_print">
+<%= form_tag('/inventories/order_summary') do %>
+  <%= label_tag :date_from%> <%= text_field_tag :date_from, @date_from, :style => "width:100px", :class => 'search_form' %>
+  <%= label_tag :date_to  %> <%= text_field_tag :date_to, @date_to, :style => "width:100px", :class => 'search_form' %><br/>
+ <%= check_box_tag :summary%> Include Summary?<br/>
+  <%= submit_tag 'Search' %>
+<% end %>
+</div>
+
+<% if @include_summary == "0" %>
+
+<table>
+  <thead>
+    <th>OS No</th>
+    <th>Customer</th>
+    <th>Total</th>
+    <th>Order Date</th>
+  </thead>
+  <tbody>
+    <% total = 0 %>
+    <% @orders.each do |o| %>
+    <tr>
+      <td class="center"><%= o.id %></td>
+      <td><%= o.customer.name %></td>
+      <td class="right"><%= number_to_currency(o.total_amount,:unit => '') %><% total += o.total_amount %></td>
+      <td class="center"><%= display_date(o.order_date) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+
+<% @orders.each_with_index do |o,index| %>
+<table class="no_borders" id="reports">
+  <thead>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="width:5px" class="center"><%= index+1 %>.</td>
+      <td style="width:40px"><b>Name:</b></td>
+      <td style="width:640px;border-bottom:1px solid #ccc;"><%= o.customer.name %></td>
+      <td style="width:40px"><b>Date:</b></td>
+      <td style="width:150px;border-bottom:1px solid #ccc;"><%= display_date(o.order_date) %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><b>Address:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= o.customer.address1 %>, <%= o.customer.city %></td>
+      <td><b>OS No:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= o.id %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><b>Total:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_amount(o.total_amount) %></td>      
+      <td><b>Terms:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= o.customer.terms %></td>
+    </tr>
+    <tr><td colspan="5">&nbsp;</td></tr>
+    <tr>
+      <td colspan="5">
+        <table>
+          <thead>
+            <th style="border:1px solid #ccc;">Product</th>
+            <th style="border:1px solid #ccc;">Quantity</th>
+            <th style="border:1px solid #ccc;">Boxes</th>
+            <th style="border:1px solid #ccc;">Pieces</th>
+            <th style="border:1px solid #ccc;">Unit Price</th>            
+            <th style="border:1px solid #ccc;">Subtotal</th>
+          </thead>
+          <tbody>
+             <% o.order_details.each do |od| %>
+             <tr>
+                <td style="width:250px;border:1px solid #ccc;"><%= od.product.name %></td>
+                <td style="width:50px;border:1px solid #ccc;" class="center"><%= od.quantity %><% count = od.product.count_per_pack %></td>
+                <td style="width:50px;border:1px solid #ccc;" class="center"><%= od.quantity.to_i / count  %></td>
+                <td style="width:50px;border:1px solid #ccc;" class="center"><%= od.quantity.to_i % count  %></td>
+                <td style="width:150px;border:1px solid #ccc;" class="right"><%= display_amount(od.unit_price)  %></td>
+                <td style="width:150px;border:1px solid #ccc;" class="right"><%= display_amount(od.quantity * od.unit_price)  %></td>
+             </tr>
+             <% end %>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr><td colspan="5">&nbsp;</td></tr>
+  </tbody>
+</table>
+
+<% end %>
+
+
+<% end %>
+
+<div class="clear"></div>
+<%= display_amount(total) %><br/>
+<%= link_to 'Print', order_summary_inventories_url(:pdf), :id => "no_print" %>

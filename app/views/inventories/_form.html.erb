@@ -1,0 +1,51 @@
+<%= form_for @inventories do |f| %>
+  <% if @inventories.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@inventories.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @inventories.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+  	<%= f.label :delivery_number %>
+	<%= f.text_field :delivery_number %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :product %>
+	<%= f.text_field :product_id %>
+  </div>
+  
+  <div class="field">
+  	<label>Beg Balance</label>
+	<%= f.text_field :beg_balance %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :in %>
+	<%= f.text_field :item_in %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :out %>
+	<%= f.text_field :item_out %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :balance %>
+	<%= f.text_field :balance %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :details %>
+	<%= f.text_field :details %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', inventory_path(@inventories) %>
+  </div>
+<% end %>

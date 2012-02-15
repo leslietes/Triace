@@ -1,0 +1,41 @@
+<%= form_for @note do |f| %>
+  <% if @note.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@note.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @note.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+  	<%= f.label :quantity %>
+	<%= f.text_field :quantity %>
+  </div>
+
+  <div class="field">
+  	<%= f.label :unit %>
+	<%= f.text_field :unit %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :product %>
+	<%= f.select :product_id, options_from_collection_for_select(@products,"id","name", @note.product_id), {:include_blank => true} %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :amount %>
+	<%= f.text_field :amount %>
+  </div>
+  
+  <div class="field">
+  	<label>Explanation</label>
+	<%= f.text_area :explanation %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', notes_path %>
+  </div>
+<% end %>

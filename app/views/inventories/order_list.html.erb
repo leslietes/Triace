@@ -1,0 +1,25 @@
+<h1>Replenishment List as of <%= Date.today %></h1>
+<br/><%= link_to 'Print', order_list_inventories_url(:pdf), :id => 'no_print' %>
+<br/>
+<% total = 0 %>
+
+<table id="inventories">
+	<thead>
+		<th>Name</th>
+		<th>Balance</th>
+<th>Unit Price</th>
+	</thead>
+	<tbody>
+		<% @inventories.each do |i| %>
+		<tr>
+			<td class="left"><%= i.name %></td>
+			<td class="center"><%= i.balance %></td>
+                        <td class="right"><%= number_to_currency(i.distributors_price, :unit => '') %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+
+<div class="clear"></div>
+<br/><%= link_to 'Print', order_list_inventories_url(:pdf), :id => 'no_print' %>

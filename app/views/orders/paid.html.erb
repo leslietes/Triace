@@ -1,0 +1,35 @@
+<h2>Paid</h2><br/>
+<table id="payments">
+  <thead>
+    <th>Delivery Date</th>
+<th>OS No</th>
+    <th>Customer</th>
+    <th>Total</th>
+    <th>Payment Made</th>
+<th>Actions</th>
+  </thead>
+  <tbody>
+    <% total = 0 %>
+    <% @orders.each do |o| %>
+    <tr>
+      <td class="center"><%= display_date(o.delivered_date) %></td>
+<td class="center"><%= o.id %></td>
+      <td><%= o.customer.name %></td>
+      <td class="right"><%= number_to_currency(o.total_amount,:unit =>'') %><% total = total + o.total_amount %></td>
+      <td class="center">
+        <% if o.paid? %>
+          <%= display_date(o.pay_date) %>
+        <% else %>
+          <%= link_to 'Pay', pay_now_order_url(o) %>
+        <% end %>
+</td><td class="center">
+        <%= link_to 'Show', o %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="clear"></div>
+<br/>
+<%= number_to_currency(total,:unit => '') %>

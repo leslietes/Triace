@@ -1,0 +1,42 @@
+<h2>Orders</h2><br/>
+<%= link_to 'New', new_order_url %><br/>
+<table id="orders">
+  <thead>
+    <th>Date</th>
+    <th>OS No</th>
+    <th>Customer</th>
+	<th>Total Amount</th>
+	<th>Terms</th>
+	<th>Delivery Date</th>
+	<th>Actions</th>
+  </thead>
+  <tbody>
+    <% total = 0 %>
+    <% @orders.each do |order| %>
+    <tr>
+      <td class="center"><%= order.order_date %></td>
+      <td class="center"><%= order.id %></td>
+      <td><%= order.customer.name %></td>
+      <td class="right"><%= number_to_currency(order.total_amount,:unit=> '') %><% total = total + order.total_amount %></td>
+      <td class="center"><%= order.customer.terms %></td>
+      <td class="center">
+        <% if order.delivered? %>
+          <%= order.delivered_date %>
+        <% else %>
+          <%= link_to 'Delivered', deliver_order_url(order) %>
+        <% end %>
+      </td>
+	  <td class="center">
+	  	<%= link_to 'Show', order_url(order) %> <%= link_to 'Edit', edit_order_url(order) %> <%= link_to 'Print', order_url(order, :pdf)%>
+	  </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="clear"></div>
+<%= display_amount(total) %>
+<br/><%= link_to 'New', new_order_url %>
+
+<script>
+$("input:text:first").focus();
+</script>

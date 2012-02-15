@@ -1,0 +1,60 @@
+<div id="panel1">
+    <h3>DR No <%= @delivery.delivery_number %> - <%= @delivery.delivery_date %></h3>
+    <div class="data">
+        <label>Delivery Date</label>: <%= @delivery.delivery_date %><br/>
+		<label>DR No</label>: <%= @delivery.delivery_number %><br/>
+        <label>Total Amount</label>: <%= number_to_currency(@delivery.total_amount,:unit => '') %><br/>
+        <label>Received By</label>: <%= @delivery.received_by %><br/>
+        <label>Terms</label>: <%= @delivery.terms %><br/>
+        <label>Details</label>: <%= @delivery.details %><br/><br/>
+		
+		<table>
+		  <thead>
+		  	  <th>Quantity</th>
+			  <th>Unit</th>
+			  <th>Product</th>
+
+			  <th>Distributor's Price</th>
+<th>Subtotal</th>
+			  <th id="no_print">Actions</th>
+		  </thead>
+		  <tbody>
+<% grand_total = 0 %>
+		  	<% @details.each do |d| %>
+                        <% if d.id %>
+		  	<tr>
+		  		<td class="center"><%= d.quantity %></td>
+				<td class="center"><%= d.unit %></td>
+				<td><%= d.product.name %></td>
+
+				<td class="right"><%= number_to_currency(d.distributors_price, :unit => '') %></td>
+<td class="right"><% total = d.quantity * d.distributors_price %> <%= number_to_currency(total,:unit => '')%></td>
+				<td class="center" id="no_print">
+				  <%= link_to 'Edit', edit_delivery_delivery_detail_url(@delivery.id, d) %>
+				  <%# link_to 'Delete'  %>
+				</td><% grand_total = grand_total + total %>
+		  	</tr>
+                        <% end %>
+			<% end %>
+			
+			
+			<%= form_tag(delivery_delivery_details_path(@delivery)) do %>
+			<tr>
+              <%# hidden_field_tag :delivery_id, @delivery.id %><%= hidden_field_tag :count_per_pack, 1 %>
+			  <td style="width:50px" id="no_print"><%= text_field_tag :quantity, '', {:id => 'narrow'} %></td>
+			  <td style="width:50px"  id="no_print"><%= text_field_tag :unit, '', :id => 'narrow' %></td>
+			  <td id="no_print"><%= select_tag :product_id, options_from_collection_for_select(@products,"id","name"), {:include_blank => true, :style => "width:600px"} %></td>
+			  <td style="width:80px" id="no_print"><span id="unit_price"><%= text_field_tag :distributors_price,  @price, :style => "width:100px" %></span></td>
+			  <td style="width:100px" id="no_print"><%= submit_tag 'Add', :id => 'narrow' %></td>
+            </tr>  
+			<% end %>
+		  </tbody>
+		</table><br/><%= number_to_currency(grand_total,:unit => '') %>
+    </div>
+    <div id="no_print"> 
+        <%= link_to 'Edit', edit_delivery_url(@deivery), :class => 'actions' %> |
+        <%= link_to 'Back', deliveries_url, :class => 'actions' %> |
+        <%= link_to 'Print', delivery_url(@delivery,:pdf), :class => 'actions' %>
+    </div>
+</div>
+<div class="clear"></div>

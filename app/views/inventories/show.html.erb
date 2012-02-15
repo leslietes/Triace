@@ -1,0 +1,24 @@
+<h2><%= @product.name %></h2><br/>
+<table>
+	<thead>
+		<th>DR No</th>
+		<th>Beginning</th>
+		<th>In</th>
+		<th>Out</th>
+		<th>Balance</th>
+     <th>Actions</th>
+	</thead>
+	<tbody>
+		<% @inventories.each do |i| %>
+		<tr>
+			<td class="center"><%= i.delivery_number %></td>
+			<td class="center"><%= i.beg_balance %></td>
+			<td class="center"><%= i.item_in %></td>
+			<td class="center"><%= i.item_out %></td>
+			<td class="center"><%= i.balance %></td>
+<td class="center"><%= link_to 'Edit', edit_inventory_url(i) %> <%= link_to 'Delete', inventory_url(i), :method => :delete, :confirm => "Are you sure you want to remove inventory entry?" %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<br/><%= link_to 'Back', inventories_url %>

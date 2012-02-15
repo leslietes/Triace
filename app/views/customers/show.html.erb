@@ -1,0 +1,20 @@
+<div id="panel1">
+	<h3><%= @customer.name %></h3>
+	<div class="data">
+		<label>Name</label>: <%= @customer.name %><br/>
+		<label>Address</label>: <%= @customer.address1 %><br/>
+		<label>&nbsp;</label>  <%= @customer.address2 %><br/>
+		<label>&nbsp;</label>  <%= @customer.city %> <%= @customer.province%><br/>
+		<label>&nbsp;</label>  <%= @customer.region %> <%= @customer.zip_code%><br/>
+		<label>Contact No</label>: <%= @customer.contact_no %><br/>
+		<label>Fax No</label>: <%= @customer.fax_no %><br/>
+		<label>Mobile No</label>: <%= @customer.mobile_no %><br/>
+		<label>Contact Person</label>: <%= @customer.contact_person %><br/>
+		<label>Terms</label>: <%= @customer.terms %><br/>
+		<label>Details</label>: <%= @customer.details %><br/>
+	</div>
+	<div id="actions">
+		<%= link_to 'Back', customers_url, :class => 'actions' %> <%= link_to 'Edit', edit_customer_url(@customer) %>
+	</div>
+</div>
+<div class="clear"></div>

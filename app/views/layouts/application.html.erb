@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tri-Ace Marketing</title>
+  <%= stylesheet_link_tag "jquery-ui-1.8.16.custom.css", "superfish", "application", :cache => true %>
+  <%= javascript_include_tag "jquery-1.6.2.min.js", "jquery-ui-1.8.16.custom.min.js", "superfish.js", "application", :cache => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<div id="pre_header_container">
+		<%= render :partial => "users/user_bar" %>
+	</div>
+		
+	<div class="container">
+		<div id="header">
+			<div id="logo">
+				Tri-Ace Marketing
+			</div>
+			<%= render 'shared/menu' %>
+		</div>
+		<div class="clear"></div>
+		<div id="main">
+			<% if notice %>
+			  <p class="notice"><%= notice %></p>
+			<% end %>
+			<% if alert %>
+			  <p class="alert"><%= alert %></p>
+			<% end %>  
+			<%= yield %>	
+		</div>
+	</div>
+</body>
+</html>

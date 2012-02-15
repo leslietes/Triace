@@ -1,0 +1,19 @@
+
+<table>
+  <thead>
+    <th>Product</th>
+    <th>Quantity</th>
+<th>Boxes</th>
+    <th>Pieces</th>
+  </thead>
+  <tbody>
+    <% @products.each do |o| %>
+    <tr>
+      <td><%= o.name %></td>
+      <td class="center"><% total = o.order_details.sum("order_details.quantity") %><%= total %><% count = o.count_per_pack %></td>
+      <td class="center"><%= total.to_i / count %></td>
+      <td class="center"><%= total.to_i % count %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

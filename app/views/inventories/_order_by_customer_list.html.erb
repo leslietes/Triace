@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <th></th>
+    <th>OS No</th>
+    <th>Date</th>
+    <th>Customer</th>
+    <th>Terms</th>
+    <th>Amount</th>
+  </thead>
+  <tbody>
+    <% @orders.each_with_index do |o,index| %>
+    <tr>
+      <td class="center"><%= index +1 %></td>
+      <td class="center"><%= o.id %></td>
+      <td class="center"><%= display_date(o.order_date) %></td>
+      <td><%= o.customer.name %></td>
+      <td class="center"><%= o.customer.terms %></td>
+      <td class="right"><%= display_amount(o.total_amount) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

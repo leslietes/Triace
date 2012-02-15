@@ -1,0 +1,16 @@
+<div id="panel1">
+	<h3><%= @product.name %></h3>
+	<div class="data">
+		<label>Code</label>: <%= @product.product_code %><br/>
+		<label>Size</label>: <%= @product.size %><br/>
+		<label>Case/Pack</label>  <%= @product.count_per_pack %><br/>
+		<label>Distributor's Price</label><%= number_to_currency(@product.distributors_price,:unit => '') %><br/>
+		<label>Wholesale Price</label>  <%= number_to_currency(@product.wholesale_price,:unit => '') %><br/>
+		<label>SRP</label>: <%= number_to_currency(@product.srp,:unit => '') %><br/>
+		<label>Expiry Date</label>: <%= @product.expiry_date %><br/>
+	</div>
+	<div id="actions">
+		<%= link_to 'Back', products_url, :class => 'actions' %>
+	</div>
+</div>
+<div class="clear"></div>

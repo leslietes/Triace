@@ -1,0 +1,17 @@
+<h2>Orders By Product</h2><br/>
+<div id="no_print">
+<%= form_tag('/inventories/order_by_product') do %>
+  <label style="width:65px;text-align:left;">Date From:</label> <%= text_field_tag :date_from, @date_from, :style => "width:100px", :class => 'search_form' %>
+  <label style="width:55px;text-align:left;">Date To:</label> <%= text_field_tag :date_to, @date_to, :style => "width:100px", :class => 'search_form' %><br/>
+  <label style="width:65px;text-align:left;">Product:</label> <%= select_tag :product, options_from_collection_for_select(@products,"id","name", session[:product]), {:include_blank => true, :style => "width:300px"} %><br/>
+ <%= check_box_tag :summary%> Include Summary?<br/>
+  <%= submit_tag 'Search', :id => 'narrow' %>
+<% end %>
+</div>
+<% if @include_summary == "0" %>
+<%= render :partial => 'order_by_product_list.html.erb' %>
+<% else %>
+<%= render :partial => 'order_by_product_summary.html.erb' %>
+<% end %>
+<br/>
+<%= link_to 'Print', order_by_product_inventories_url(:pdf), :id => "no_print" %>

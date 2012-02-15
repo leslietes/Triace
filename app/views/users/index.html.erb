@@ -1,0 +1,32 @@
+<div id="panel1">
+	<h3>Users<span><%= link_to '+ New User', new_user_path %></span></h3>
+	<div class="data">
+	<table id="users" class="lists">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Login</th>
+				<th>Email Address</th>
+				<th>Role</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @users.each do |user| %>
+				<tr>
+					<td><%= user.name  %></td>
+					<td class="center"><%= user.login %></td>
+					<td class="center"><%= user.email %></td>
+					<td class="center"><%= user.role  %></td>
+					<td id="actions">
+						<%= link_to 'Edit', edit_user_path(user) %>
+						<%= link_to 'Delete', user_path(user), :method => :delete, :confirm => "Are you sure?" %>
+					</td>
+				</tr>
+      		<% end %>
+		</tbody>
+    </table>
+	</div>
+</div>
+
+<div class="clear"></div>

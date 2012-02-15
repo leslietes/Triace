@@ -1,0 +1,57 @@
+<% @orders.each_with_index do |o,index| %>
+<table class="no_borders" id="reports">
+  <thead>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="width:5px" class="center"><%= index+1 %>.</td>
+      <td style="width:40px"><b>Name:</b></td>
+      <td style="width:640px;border-bottom:1px solid #ccc;"><%= o.customer.name %></td>
+      <td style="width:40px"><b>Date:</b></td>
+      <td style="width:150px;border-bottom:1px solid #ccc;"><%= display_date(o.order_date) %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><b>Address:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= o.customer.address1 %>, <%= o.customer.city %></td>
+      <td><b>OS No:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= o.id %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><b>Total:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_amount(o.total_amount) %></td>      
+      <td><b>Terms:</b></td>
+      <td style="border-bottom:1px solid #ccc;"><%= o.customer.terms %></td>
+    </tr>
+    <tr><td colspan="5">&nbsp;</td></tr>
+    <tr>
+      <td colspan="5">
+        <table>
+          <thead>
+            <th style="border:1px solid #ccc;">Product</th>
+            <th style="border:1px solid #ccc;">Quantity</th>
+            <th style="border:1px solid #ccc;">Boxes</th>
+            <th style="border:1px solid #ccc;">Pieces</th>
+            <th style="border:1px solid #ccc;">Unit Price</th>            
+            <th style="border:1px solid #ccc;">Subtotal</th>
+          </thead>
+          <tbody>
+             <% o.order_details.each do |od| %>
+             <tr>
+                <td style="width:250px;border:1px solid #ccc;"><%= od.product.name %></td>
+                <td style="width:50px;border:1px solid #ccc;" class="center"><%= od.quantity %><% count = od.product.count_per_pack %></td>
+                <td style="width:50px;border:1px solid #ccc;" class="center"><%= od.quantity.to_i / count  %></td>
+                <td style="width:50px;border:1px solid #ccc;" class="center"><%= od.quantity.to_i % count  %></td>
+                <td style="width:150px;border:1px solid #ccc;" class="right"><%= display_amount(od.unit_price)  %></td>
+                <td style="width:150px;border:1px solid #ccc;" class="right"><%= display_amount(od.quantity * od.unit_price)  %></td>
+             </tr>
+             <% end %>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr><td colspan="5">&nbsp;</td></tr>
+  </tbody>
+</table>
+<% end %>

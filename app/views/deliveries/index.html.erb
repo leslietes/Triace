@@ -1,0 +1,35 @@
+<table>
+  <thead>
+    <th>Delivery Date</th>
+	<th>Delivery No</th>
+    <th>Product Count</th>
+    <th>Received By</th>
+    <th>Terms</th>
+    <th>Details</th>
+	<% if current_user.is_admin? %>
+	<th>Total Amount</th>
+	<th>Actions</th>
+	<% end %>
+  </thead>
+  <tbody>
+    <% @deliveries.each do |c| %>
+    <tr>
+      <td class="center"><%= c.delivery_date %></td>
+	  <td class="center"><%= c.delivery_number %></td>
+      <td class="center"><%= c.delivery_detail_count %></td>
+      <td class="center"><%= c.received_by %></td>
+      <td class="center"><%= c.terms %></td>
+      <td><%= c.details %></td>
+      <% if current_user.is_admin? %>
+      <td class="right"><%= number_to_currency(c.total_amount, :unit => '') %></td>
+      <td class="center">
+        <%= link_to 'Show', delivery_url(c) %>
+        <%= link_to 'Edit', edit_delivery_url(c) %>
+      </td>
+	  <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/><%= link_to 'New', new_delivery_url %>

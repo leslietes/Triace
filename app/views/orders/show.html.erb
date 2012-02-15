@@ -1,0 +1,118 @@
+<div id="panel1">
+  <h2 class="center"><div class="center"><small></small></div></h2>
+  
+  
+  <div class="data">
+    <table id="no_border">
+    <tr>
+      <td style="width:5%"></td>
+      <td style="width:70%;"></td>
+      <td style="width:5%">OS #:</td>
+      <td style="width:20%;border-bottom:1px solid #ccc;"><%= @order.id %></td>
+    </tr>
+    <tr>
+      <td>To: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= @order.customer.name %></td>
+      <td>Date: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_date(@order.order_date) %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="border-bottom:1px solid #ccc;"><%= @order.customer.address %></td>
+      <td>Terms:</td>
+      <td style="border-bottom:1px solid #ccc;"><%= @order.customer.terms%></td>
+    </tr>
+    <% if !@order.comments.blank? %>
+    <tr>
+      <td></td>
+      <td style="border-bottom:1px solid #ccc;"><%= @order.comments %>&nbsp;</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% end %>
+   </table>
+  	
+<br/><br/>
+    
+	<table>
+	  <thead>
+	    <th>Quantity</th>
+		<th>Unit</th>
+		<th>Product</th>
+		<th>Unit Price</th>
+		<th>Subtotal</th>
+<% if !@order.delivered? %>
+		<th id="no_print">Actions</th>
+<% end %>
+	  </thead>
+	  <tbody>
+	  	<% sum = 0 %>
+	  	<% @order_details.each_with_index do |od,index| %>
+		<% if od.id %>
+	    <tr>
+	          <td class="center" style="width:80px"><%= od.quantity%></td>
+		  <td class="center"  style="width:100px"><%= od.unit%></td>
+		  <td style="width:430px"><%= od.product.name%></td>
+		  <td class="right" style="width:100px"><%= number_to_currency(od.unit_price,:unit => '')%></td>
+		  <td class="right" style="width:100px"><% subtotal = od.quantity * od.unit_price %><%=  number_to_currency(subtotal,:unit=> '') %></td>
+                  <% if !@order.delivered? %>
+ 		  <td class="center" id="no_print" style="width:50px"><%= link_to 'Edit', edit_order_order_detail_url(@order,od) %>
+<%= link_to 'Delete', order_order_detail_url(@order,od), :method => :delete, :confirm => "Are you sure you want to delete detail?"%></td>
+                  <% end %>
+		  <% sum = sum + subtotal %>
+	    </tr>
+		
+		<% end %>
+		<% end %>
+		
+<% if !@order.delivered? %>
+		<%= form_tag(order_order_details_path(@order)) do %>
+		<%# hidden_field_tag :order_id, @order.id %>
+		<tr>
+			<td id="no_print"><%= text_field_tag :quantity, '', :id => 'narrow' %></td>
+			<td id="no_print"><%= text_field_tag :unit, '', :id => 'narrow' %></td>
+			<td id="no_print"><%= select_tag :product_id, options_from_collection_for_select(@products,"id","name"), {:include_blank => true, :style => "width:450px"} %></td>
+			<td id="no_print"><span id="unit_price"><%= text_field_tag :distributors_price %></span></td>
+			<td id="no_print"></td>
+			<td id="no_print"><%= submit_tag 'Add', :id => 'narrow' %></td>
+		</tr>
+		<% end %>
+<% end %>
+		<tr style="border:none;">
+			<td style="border:none;"></td>
+                        <td style="border:none;"></td>
+			<td style="border:none;" class="right" colspan="2"><b>Grand Total</b></td>
+			<td style="border:none;" class="right"><b><%= number_to_currency(sum, :unit => '') %></b></td>
+			<% if !@order.delivered? %><td style="border:none;" id="no_print"></td><% end %>
+		</tr>
+	  </tbody>
+	</table>
+ <br/> <br/>
+        
+        <table id="no_border" class="signature">
+            <tr>
+              <td style="width:80px;">Prepared By:</td>
+              <td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+              <td style="width:50px">&nbsp;</td>
+              <td style="width:100px;">Received By:</td>
+              <td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+              <td style="width:50px">&nbsp;</td>
+            </tr>
+            <tr>
+              <td >&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>Date:</td>
+              <td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+        </table>
+        
+    
+  </div>
+  <div id="no_print"><% if !@order.paid? %><%= link_to 'Edit', edit_order_url(@order), :class => 'actions' %><% end %>
+        <%= link_to 'Back', orders_url, :class => 'actions' %>
+		<%= link_to 'Print', order_url(@order, :pdf)%>
+    </div>
+</div>
+<div class="clear"></div>

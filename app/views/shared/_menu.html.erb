@@ -1,0 +1,40 @@
+<% if logged_in? %>
+<div>
+	<ul class="sf-menu">
+		<li><%= link_to 'Maintenance' %>
+			<ul>
+				<li><%= link_to 'Customers', customers_url %></li>
+				<li><%= link_to 'Products', products_url %></li>
+				<li><%#= link_to 'Departments', departments_url %></li>
+				<% if current_user.is_admin? %>
+				<li><%= link_to 'Users', users_url %></li>
+				<% end %>
+			</ul>
+		</li>	
+		<li><%= link_to 'Transactions' %>
+			<ul>
+				<li><%= link_to 'Inventory In',   deliveries_url %></li>
+				<li><%= link_to 'Orders',   orders_url %></li>
+<li><%= link_to 'Adjustments',   adjustments_url %></li>
+				<li><%= link_to 'Notes', notes_url %></li>				
+			</ul>
+		</li>
+                <li><%= link_to 'Payments' %>
+                     <ul>
+                         <li><%= link_to 'Pending', payments_url %></li>				
+			<li><%= link_to 'Paid', paid_url %></li>
+                     </ul>
+                </li>
+		<li><%= link_to 'Reports' %>
+			<ul>
+				<li><%= link_to 'Inventory', inventories_url %></li>
+				<li><%= link_to 'Replenishment List', order_list_inventories_url %></li>
+				<li><%= link_to 'Deliveries By Customer', order_by_customer_inventories_url %></li>
+				<li><%= link_to 'Orders By Date', order_summary_inventories_url %></li>
+
+				<li><%= link_to 'Orders By Product', order_by_product_inventories_url %></li>
+			</ul>
+		</li>
+	</ul>	
+</div>
+<% end %>			
