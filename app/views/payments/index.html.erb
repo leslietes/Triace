@@ -1,0 +1,36 @@
+<%= link_to 'New', new_payment_url %><br/>
+<table id="payments">
+  <thead>
+    <th style="width:15%">Payment Date</th>
+    <th style="width:20%">Customer</th>
+    <th style="width:5%">AR/OR No</th>
+    <th style="width:5%">Mode</th>
+    <th style="width:10%">Check No</th>
+    <th style="width:10%">Check Date</th>
+    <th style="width:10%">Total Amount</th>
+    <th style="width:10%">Amount Applied</th>
+    <th style="width:10%">Actions</th>
+  </thead>
+  <tbody>
+    <% @payments.each do |c| %>
+    <tr>
+      <td class="center"><%= display_date(c.payment_date) %></td>
+      <td><%= c.customer.name %></td>
+      <td class="center"><%= c.payment_reference %></td>
+      <td class="center"><%= c.mode %></td>
+      <td class="center"><%= c.ref_no %></td>
+      <td class="center"><%= display_date(c.check_date) if !c.check_date.nil? %></td>
+      <td class="right"><%= display_amount(c.total_amount) %></td>
+      <td class="right"><%= display_amount(c.amount_applied) %></td>
+      <td class="center">
+        <%= link_to 'Show', payment_url(c) %>
+        <%= link_to 'Edit', edit_payment_url(c) %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<div class="clear"></div>
+<%= link_to 'New', new_payment_url %>

@@ -1,0 +1,28 @@
+<table>
+  <thead>
+    <th style="width:15%;border:1px solid #ccc;">Payment Date</th>
+    <th style="width:5%;border:1px solid #ccc;">OS No</th>
+    <th style="width:35%;border:1px solid #ccc;">Customer</th>
+    <th style="width:5%;border:1px solid #ccc;">Mode</th>
+    <th style="width:15%;border:1px solid #ccc;">Ref No</th>
+    <th style="width:15%;border:1px solid #ccc;">Check Date</th>
+    <th style="width:10%;border:1px solid #ccc;">Total Amount</th>
+  </thead>
+  <% total = 0 %>
+  <% @payments.each do |c| %>
+  <% c.payment_details.each do |detail| %>
+  <tr>
+    <td class="center" style="border:1px solid #ccc;"><%= display_date(c.payment_date) %></td>
+    <td class="center" style="border:1px solid #ccc;"><%= detail.order.id %></td>
+    <td style="border:1px solid #ccc;"><%= detail.order.customer.name %></td>
+    <td class="center" style="border:1px solid #ccc;"><%= c.mode %></td>
+    <td class="center" style="border:1px solid #ccc;"><%= c.ref_no %></td>
+    <td class="center" style="border:1px solid #ccc;"><%= display_date(c.check_date) if !c.check_date.nil? %></td>
+    <td class="right" style="border:1px solid #ccc;"><%= display_amount(detail.amount) %><% total += detail.amount %></td>
+  </tr>
+  <% end %>
+  <% end %>
+</table>
+
+<br/>
+<%= display_amount(total) %>

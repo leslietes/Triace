@@ -1,0 +1,115 @@
+<div id="panel1">
+  <h2 class="center">TRI-ACE MARKETING<%#= image_tag("#{Rails.root}/app/assets/images/logo-smaller.jpg", :alt => "") %></h2>
+  
+  <div class="data">
+     <table id="no_border">
+    <tr>
+      <td style="width:10%"></td>
+      <td style="width:50%;"></td>
+      <td style="width:10%">Date:</td>
+      <td style="width:20%;border-bottom:1px solid #ccc;"><%= display_date(@payment.payment_date) %></td>
+    </tr>
+    <tr>
+      <td>Customer: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= @payment.customer.name %></td>
+      <td>AR/OR No: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= @payment.payment_reference %></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td style="border-bottom:1px solid #ccc;"><%= @payment.customer.address %></td>
+      <td>Payment:</td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_amount(@payment.total_amount) %></td>
+    </tr>
+
+    <tr>
+     <td>Mode: </td>
+     <td style="border-bottom:1px solid #ccc;"><%= @payment.mode %></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td>Check No: </td>
+     <td style="border-bottom:1px solid #ccc;"><%= @payment.ref_no %></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td>Check Date: </td>
+     <td style="border-bottom:1px solid #ccc;"><%= display_date(@payment.check_date) if !@payment.check_date.nil? %></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+    </tr>
+
+<tr>
+     <td>Total Amount: </td>
+     <td style="border-bottom:1px solid #ccc;"><%= display_amount(@payment.total_amount) %></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td>Amount Applied: </td>
+     <td style="border-bottom:1px solid #ccc;"><%= display_amount(@payment.amount_applied) %></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+    </tr>
+
+<tr>
+     <td>Balance: </td>
+     <td style="border-bottom:1px solid #ccc;"><%= display_amount(@payment.total_amount - @payment.amount_applied) %></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+    </tr>
+
+   </table>
+
+   <br/>
+
+   <table>
+     <thead>
+       <th style="width:15%">Delivery Date</th>
+       <th style="width:10%">Order No</th>
+       <th style="width:50%">Customer</th>
+       <th style="width:10%">Total Amount</th>
+       <th style="width:10%">Amount Paid</th>
+       <th style="width:5%">Action</th>
+     </thead>
+     <tbody>
+       <% @payment_details.each do |detail| %>
+	  <tr class="highlight">
+                <td class="center"><%= display_date(detail.order.delivered_date) %></td>
+	  	<td class="center"><%= link_to(detail.order.id, order_url(detail.order.id)) %></td>
+	  	<td><%= detail.customer.name %></td>
+		<td class="right"><%= display_amount(detail.order.total_amount) %></td>
+		<td class="right"><%= display_amount(detail.amount) %></td>
+		<td class="center links"><%= link_to 'Remove', cancel_payment_url(@payment.id,detail.order.id) %></td>
+	  </tr>		
+	<% end %>
+
+       <% if @unpaid %>
+       <% @unpaid.each_with_index do |o,index| %>
+       <tr id="<%= o.id %>">
+         <td class="center"><%= display_date(o.delivered_date) %></td>
+         <td class="center"><%= o.id %></td>
+         <td><%= o.customer.name %></td>
+         <td class="right"><%= display_amount(o.total_amount-o.amount_paid) %></td>
+         <td><%= text_field_tag :amount_applied, 0.00, {:readonly => "readonly"} %></td>
+         <td class="center"><%= link_to 'Add', apply_payment_url(@payment.id,o.id) %></td>
+       </tr>
+       <% end %>
+       <% end %>
+
+     </tbody>
+   </table>
+  </div>
+
+ <div id="no_print">
+    <%= link_to 'New', new_payment_url, :class => 'actions' %>
+    <%= link_to 'Edit', edit_payment_url(@payment), :class => 'actions' %>
+  </div>
+</div>
+<div class="clear"></div>
+

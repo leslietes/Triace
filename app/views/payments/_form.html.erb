@@ -1,0 +1,53 @@
+<%= form_for @payment do |f| %>
+ <% if @payment.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@payment.errors.count, "error")%> prohibited this entry from being saved:</h2>
+        <ul>
+          <% @payment.errors.full_messages.each do |d| %>
+		    <li><%= msg %></li>
+		  <% end %>
+        </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+  	<%= f.label :customer %>
+	<%= f.select :customer_id, options_from_collection_for_select(@customers, "id","name",@payment.customer_id), :include_blank => true, :class => "focus" %>
+  </div>
+
+  <div class="field">
+  	<%= f.label :payment_reference %>
+	<%= f.text_field :payment_reference %>
+  </div>
+
+  <div class="field">
+  	<%= f.label :payment_date %>
+	<%= f.text_field :payment_date, :class => 'calendar' %>
+  </div>
+  
+  <div class="field">
+  	<%= f.label :mode %>
+	<%= radio_button("payment","mode", "CASH") %> Cash
+	<%= radio_button("payment","mode", "Check") %> Check
+	<%= radio_button("payment","mode", "Other") %> Other
+  </div>
+
+  <div class="field">
+  	<%= f.label :check_no %>
+	<%= f.text_field :ref_no %>
+  </div>
+
+  <div class="field">
+  	<%= f.label :check_date %>
+	<%= f.text_field :check_date, :class => 'calendar' %>
+  </div>
+
+  <div class="field">
+  	<%= f.label :total_amount %>
+	<%= f.text_field :total_amount %>
+  </div>
+  
+  <div class="actions">
+  	<%= f.submit 'Save' %>&nbsp;&nbsp;&nbsp;<%= link_to 'Cancel', payments_path %>
+  </div>
+<% end %>

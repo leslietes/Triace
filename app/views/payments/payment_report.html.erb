@@ -1,0 +1,21 @@
+<h2>Payments from <%= display_date(@date_from.to_date) %> to <%= display_date(@date_to.to_date) %></h2><br/>
+
+<div id="no_print">
+<%= form_tag('/payments/payment_report') do %>
+  <label style="width:65px;text-align:left;">Date From:</label> <%= text_field_tag :date_from, @date_from, {:style => "width:100px", :class => 'search_form'} %>
+  <label style="width:55px;text-align:left;">Date To:</label> <%= text_field_tag :date_to, @date_to, {:style => "width:100px", :class => 'search_form'} %><br/>
+  <label style="width:55px;text-align:left;">Mode:</label> <%= select_tag :mode, options_for_select(['','CASH','Check']) %><br/>
+  <%= check_box_tag :summary%> Include Summary?<br/>
+  <%= submit_tag 'Search', :id => 'narrow' %>
+<% end %>
+</div><br/>
+
+<% if @include_summary == '1' %>
+  <%= render :partial => '/payments/payment_report_details.html.erb' %>
+<% else %>
+  <%= render :partial => '/payments/payment_report_list.html.erb' %>
+<% end %>
+
+
+<br/>
+<%= link_to 'Print', payment_report_payments_url(:pdf), :method => :post, :id => "no_print" %>

@@ -1,0 +1,58 @@
+<% @payments.each do |c| %>
+<table class="no_borders" id="reports">
+  <tbody>
+    <tr>
+      <td style="width:40px">Customer: </td>
+      <td style="width:600px;border-bottom:1px solid #ccc;""><%= c.customer.name %></td>
+      <td style="width:60px">Date: </td>
+      <td style="width:160px;border-bottom:1px solid #ccc;""><%= display_date(c.payment_date) %></td>
+    </tr>
+    <tr>
+      <td>AR/OR #: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= c.payment_reference %></td>      
+      <td>Amount: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_amount(c.total_amount) %></td>   
+      
+    </tr>
+    <tr>
+      <td>Mode: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= c.mode %></td>
+      <td>Applied: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_amount(c.amount_applied) %></td>
+    </tr>
+    <tr>
+      <td>Details: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= c.ref_no %> <%= display_date(c.check_date) if !c.check_date.nil? %></td>
+      <td>Balance: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_amount(c.total_amount - c.amount_applied) %></td>
+    </tr>
+
+    <tr><td colspan="4">&nbsp;</td></tr>
+    <tr>
+      <td colspan="4">
+        <table id="reports">
+          <thead>
+            <th style="width:40px;border:1px solid #ccc;">Delivery Date</th>
+   	    <th style="width:40px;border:1px solid #ccc;">OS No</th>
+	    <th style="width:150px;border:1px solid #ccc;">Customer</th>
+	    <th style="width:30px;border:1px solid #ccc;">Total Amount</th>
+	    <th style="width:30px;border:1px solid #ccc;">Amount Applied</th>
+	    <th style="width:30px;border:1px solid #ccc;">Balance</th>
+          </thead>
+          <% c.payment_details.each do |detail| %>
+          <tr>
+            <td class="center" style="border:1px solid #ccc;"><%= display_date(detail.order.delivered_date) %></td>
+            <td class="center" style="border:1px solid #ccc;"><%= detail.order.id %></td>
+            <td style="border:1px solid #ccc;"><%= detail.order.customer.name %></td>
+            <td class="right" style="border:1px solid #ccc;"><%= display_amount(detail.order.total_amount) %></td>
+            <td class="right" style="border:1px solid #ccc;"><%= display_amount(detail.amount) %></td>
+            <td class="right" style="border:1px solid #ccc;"><%= display_amount(detail.order.total_amount-detail.amount) %></td>
+          </tr>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+    <tr><td colspan="4">&nbsp;</td></tr>
+  </tbody>
+</table>
+<% end %>
