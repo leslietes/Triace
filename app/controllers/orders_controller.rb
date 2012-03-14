@@ -1,7 +1,11 @@
 class OrdersController < ApplicationController
-  
+  before_filter :login_required
   before_filter :get_customers
   before_filter :get_products
+
+  def first
+a = "jello"
+  end
   
   def index
     @orders = Order.find(:all, :conditions => ["delivered = false"], :include => [:customer], :order => "order_date ASC,customers.name ASC")
@@ -51,16 +55,22 @@ class OrdersController < ApplicationController
     end
   end
   
-  def delete
-    
+  def destroy
+    @order = Order.find_by_id(params[:id])
+    if @order.destroy
+      flash[:notice] = "Successfully deleted order"
+    else
+      flash[:error] = "Error in deleting order"
+    end
+    redirect_to orders_url
   end
 
   def payments
-    @orders = Order.find(:all, :conditions => ["delivered = true and paid = false"], :include => [:customer])
+    @orders = Order.all_unpaid
   end
 
   def paid
-    @orders = Order.find(:all, :conditions => ["delivered = true and paid = true"], :include => [:customer])
+    @orders = Order.all_paid
   end
 
   def deliver

@@ -1,4 +1,5 @@
 class DeliveriesController < ApplicationController
+  before_filter :login_required
   before_filter :get_products
   def index
     @deliveries = Delivery.all

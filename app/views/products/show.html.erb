@@ -5,7 +5,7 @@
 		<label>Size</label>: <%= @product.size %><br/>
 		<label>Case/Pack</label>  <%= @product.count_per_pack %><br/>
 		<label>Distributor's Price</label><%= number_to_currency(@product.distributors_price,:unit => '') %><br/>
-		<label>Wholesale Price</label>  <%= number_to_currency(@product.wholesale_price,:unit => '') %><br/>
+		<label>Case Price</label>  <%= number_to_currency(@product.case_price,:unit => '') %><br/>
 		<label>SRP</label>: <%= number_to_currency(@product.srp,:unit => '') %><br/>
 		<label>Expiry Date</label>: <%= @product.expiry_date %><br/>
 	</div>

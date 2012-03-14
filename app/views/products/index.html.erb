@@ -5,6 +5,7 @@
     <th>Count/Pack</th>
     <% if current_user.is_admin? %>
     <th>Unit Price</th>
+    <th>Case Price</th>
     <th>Actions</th>
     <% end %>
   </thead>
@@ -16,6 +17,7 @@
       <td class="center"><%= c.count_per_pack %></td>
       <% if current_user.is_admin? %>
       <td class="right"><%= number_to_currency(c.distributors_price,:unit => '') %></td>
+      <td class="right"><%= number_to_currency(c.case_price,:unit => '') %></td>
       <td class="center">
         <%= link_to 'Show', product_url(c) %>
         <%= link_to 'Edit', edit_product_url(c) %>

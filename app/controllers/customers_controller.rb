@@ -1,4 +1,5 @@
 class CustomersController < ApplicationController
+  before_filter :login_required
   def index
     @customers = Customer.find(:all, :order => "name ASC")
   end

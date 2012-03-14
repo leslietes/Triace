@@ -31,7 +31,7 @@
 <td class="right"><% total = d.quantity * d.distributors_price %> <%= number_to_currency(total,:unit => '')%></td>
 				<td class="center" id="no_print">
 				  <%= link_to 'Edit', edit_delivery_delivery_detail_url(@delivery.id, d) %>
-				  <%# link_to 'Delete'  %>
+				  <%= link_to 'Delete', delivery_delivery_detail_url(@delivery.id, d), :method => :delete, :confirm => "Are you sure?"  %>
 				</td><% grand_total = grand_total + total %>
 		  	</tr>
                         <% end %>
@@ -52,7 +52,8 @@
 		</table><br/><%= number_to_currency(grand_total,:unit => '') %>
     </div>
     <div id="no_print"> 
-        <%= link_to 'Edit', edit_delivery_url(@deivery), :class => 'actions' %> |
+        <%= link_to 'New', new_delivery_url, :class => 'actions' %> |
+        <%= link_to 'Edit', edit_delivery_url(@delivery), :class => 'actions' %> |
         <%= link_to 'Back', deliveries_url, :class => 'actions' %> |
         <%= link_to 'Print', delivery_url(@delivery,:pdf), :class => 'actions' %>
     </div>

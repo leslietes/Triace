@@ -1,0 +1,88 @@
+<div id="panel1">
+  <h2 class="center">TRI-ACE MARKETING<div class="center"></div></h2>
+  
+  
+  <div class="data">
+    <table id="no_border">
+    <tr>
+      <td style="width:5%"></td>
+      <td style="width:70%;"></td>
+      <td style="width:5%">Adj #:</td>
+      <td style="width:20%;border-bottom:1px solid #ccc;"><%= @adjustment.id %></td>
+    </tr>
+    <tr>
+      <td>To: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= @adjustment.customer.name %></td>
+      <td>Date: </td>
+      <td style="border-bottom:1px solid #ccc;"><%= display_date(@adjustment.adjustment_date) %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="border-bottom:1px solid #ccc;"><%= @adjustment.customer.address %></td>
+      <td>Explanation:</td>
+      <td style="border-bottom:1px solid #ccc;"><%= @adjustment.explanation %></td>
+    </tr>
+   </table>
+  	
+<br/><br/>
+    <table>
+	  <thead>
+	    <th>Quantity</th>
+		<th>Unit</th>
+		<th>Product</th>
+		<th>Unit Price</th>
+		<th>Subtotal</th>
+		<th id="no_print">Actions</th>
+	  </thead>
+	  <tbody>
+	  	<% sum = 0 %>
+	  	<% @adjustment_details.each do |od| %>
+		<% if od.id %>
+	    <tr>
+	          <td class="center" style="width:80px"><%= od.quantity_out%></td>
+		  <td class="center"  style="width:100px"><%= od.unit%></td>
+		  <td style="width:350px"><%= od.product.name %></td>
+		  <td class="right" style="width:100px"><%= number_to_currency(od.unit_price,:unit => '')%></td>
+		  <td class="right" style="width:100px"><% subtotal = (od.quantity_in - od.quantity_out) * od.unit_price %><%=  number_to_currency(subtotal,:unit=> '') %></td>
+		  <td class="center" id="no_print" style="width:50px"><%= link_to 'Edit', edit_adjustment_adjustment_detail_url(@adjustment,od) %></td>
+		  <% sum = sum + subtotal %>
+	    </tr>
+		
+		<% end %>
+		<% end %>
+		
+		<tr style="border:none;">
+                        <td style="border:none;"></td>
+			<td style="border:none;" class="right" colspan="2"><b>Grand Total</b></td>
+			<td style="border:none;" class="right"><b><%= number_to_currency(sum, :unit => '') %></b></td>
+			<td style="border:none;" ></td>
+			<td style="border:none;" id="no_print"></td>
+		</tr>
+	  </tbody>
+	</table>
+	
+ <br/> <br/>
+        
+        <table id="no_border" class="signature">
+            <tr>
+              <td style="width:80px;">Prepared By:</td>
+              <td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+              <td style="width:50px">&nbsp;</td>
+              <td style="width:100px;">Received By:</td>
+              <td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+              <td style="width:50px">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>Date:</td>
+              <td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+        </table>
+        
+    
+  </div>
+</div>
+<div class="clear"></div>

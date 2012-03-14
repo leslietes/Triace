@@ -4,6 +4,7 @@ class DeliveryDetail < ActiveRecord::Base
   
   after_create :update_inventory, :update_delivery_total
   #after_update :update_product_count
+  after_destroy :remove_inv_entry
   
   protected
   
@@ -33,5 +34,10 @@ class DeliveryDetail < ActiveRecord::Base
     
     Inventory.add_new(dr_no,product,beg_balance,item_in,item_out)
     Product.update_balance(product,balance)
+  end
+
+  def remove_inv_entry
+    Inventory.remove_entry("DR ##{self.delivery.id}",self.product_id,self.quantity)
+    Product.recalculate_inventory(self.product_id)
   end
 end

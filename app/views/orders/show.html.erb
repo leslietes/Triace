@@ -1,5 +1,5 @@
 <div id="panel1">
-  <h2 class="center"><div class="center"><small></small></div></h2>
+  <h2 class="center">TRI-ACE MARKETING<%#= image_tag("#{Rails.root}/app/assets/images/logo-smaller.jpg", :alt => "") %></h2>
   
   
   <div class="data">
@@ -72,7 +72,7 @@
 			<td id="no_print"><%= text_field_tag :quantity, '', :id => 'narrow' %></td>
 			<td id="no_print"><%= text_field_tag :unit, '', :id => 'narrow' %></td>
 			<td id="no_print"><%= select_tag :product_id, options_from_collection_for_select(@products,"id","name"), {:include_blank => true, :style => "width:450px"} %></td>
-			<td id="no_print"><span id="unit_price"><%= text_field_tag :distributors_price %></span></td>
+			<td id="no_print"><span id="unit_price"><%= text_field_tag :distributors_price %><% text_field_tag :case_price %></span></td>
 			<td id="no_print"></td>
 			<td id="no_print"><%= submit_tag 'Add', :id => 'narrow' %></td>
 		</tr>
@@ -87,7 +87,7 @@
 		</tr>
 	  </tbody>
 	</table>
- <br/> <br/>
+ <br/>
         
         <table id="no_border" class="signature">
             <tr>
@@ -110,7 +110,7 @@
         
     
   </div>
-  <div id="no_print"><% if !@order.paid? %><%= link_to 'Edit', edit_order_url(@order), :class => 'actions' %><% end %>
+  <div id="no_print"><%= link_to 'New', new_order_url, :class => 'actions' %><% if !@order.paid? %> <%= link_to 'Edit', edit_order_url(@order), :class => 'actions' %><% end %>
         <%= link_to 'Back', orders_url, :class => 'actions' %>
 		<%= link_to 'Print', order_url(@order, :pdf)%>
     </div>

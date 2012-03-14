@@ -94,6 +94,9 @@ table.no_borders, table.no_borders th, table.no_borders td {border:none;width:au
 
 .window { border:1px solid #dedede;position:relative;width:20%;padding:10px;float:left;margin-right:10px;}
 
+.signature { margin:10px;border:none;}
+.signature img { width:150px; }
+
 @media print {
   body {
     background-color: #FFF;font-size:11px;
@@ -120,5 +123,5 @@ table.no_borders, table.no_borders th, table.no_borders td {border:none;width:au
   #panel1 { border:none;}
   #panel1 h3 { border:none;}
 #reports {page-break-inside:avoid; }
-  /*.signature { position:absolute;bottom:10px; }*/
+  .signature { border:none; }
 }

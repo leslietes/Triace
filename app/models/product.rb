@@ -4,6 +4,7 @@ class Product < ActiveRecord::Base
   has_many :inventories#, :conditions => ["closed = false"]
   has_many :adjustment_details
   has_many :notes
+  has_many :po_details
 
   # order_details - delete
   def self.recalculate_inventory(product)

@@ -47,6 +47,7 @@ before_filter :login_required
   def get_price
     product = Product.find_by_id(params[:id])
     if product
+      @case_price = product.case_price #case_price
       @price = product.distributors_price
       @balance = product.balance
     end

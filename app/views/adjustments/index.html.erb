@@ -2,6 +2,7 @@
 <table>
   <thead>
     <th>Date</th>
+<th>ID</th>
     <th>Customer</th>
     <th>Total Amount</th>
     <th>Explanation</th>
@@ -11,6 +12,7 @@
     <% @adjustments.each do |a| %>
     <tr>
       <td class="center"><%= display_date(a.adjustment_date) %></td>
+<td><%= a.id %></td>
       <td><%= a.customer.name %></td>
       <td class="right"><%= number_to_currency(a.total_amount, :unit => '') %></td>
       <td class="center"><%= a.explanation %></td>

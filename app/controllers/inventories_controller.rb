@@ -1,8 +1,23 @@
 class InventoriesController < ApplicationController
+  before_filter :login_required
   before_filter :get_products
   before_filter :get_customers, :only => [:order_by_customer]
   def index
-    @inventories = Product.find(:all, :order => "name ASC")
+    @inventories = Product.find(:all, :order => "name ASC", :conditions => ["product_code != ?", "SINCLAIR"])
+    respond_to do |format|
+      format.html
+      format.pdf {
+        html = render_to_string(:layout => false, :action => "index.html.erb")
+        kit  = PDFKit.new(html)
+        kit.stylesheets << "#{Rails.root}/app/assets/stylesheets/application.css"
+        send_data(kit.to_pdf, :filename => "Inventory as of #{Date.today}.pdf", :type => 'application/pdf')
+        return
+      }
+    end
+  end
+
+  def paints
+    @inventories = Product.find(:all, :conditions => ["product_code = ?", "SINCLAIR"], :order => "name ASC")
     respond_to do |format|
       format.html
       format.pdf {
@@ -234,20 +249,38 @@ class InventoriesController < ApplicationController
       sql << [" DATE(orders.order_date) <= DATE('#{@date_to}') "]
     end
 
+    sql << [" products.product_code != 'SINCLAIR' "]
+
     sql = sql.join(" and ")
     
-
-    #@orders = OrderDetail.find(:all, :include => [{:order => :customer}, :product], :select => "orders.id, orders.customer_id, orders.order_date, customers.name, products.name, sum(order_details.quantity as quantity, order_details.unit, order_details.unit_price, products.count_per_pack", :conditions => [sql], :order => "products.name ASC", :group => "order_details.product_id")
-
+    #select distinct orders.order_date, orders.id, order_details.product_id, products.name from orders, order_details, products where orders.id = order_details.order_id and order_details.product_id = products.id and DATE(orders.order_date) >= '2012-03-01' and DATE(orders.order_date) <= '2012-03-31' order by products.id ASC, orders.order_date ASC, orders.id ASC;
+puts "=========================#{sql}"
+puts "=======================#{@include_summary.class}"
     #todo add customer association
-    if !session[:summary] == "1"
-    @products = Product.find(:all, :include => [:order_details], :select => " distinct * ",
-                               :conditions => [sql], :order => "products.name ASC, orders.order_date ASC", :group => "products.id")
-    else
+    #if !session[:summary] == "1"
+    if @include_summary == "1"
+puts "here here here"
     @products = Product.find(:all, :include => [{:order_details => :order} ], 
-                               :conditions => [sql], :order => "products.name ASC, orders.order_date ASC")
-    end
+                               :conditions => [sql], :order => "products.name ASC, orders.order_date ASC") #, :group => "products.id")
 
+    else
+# unclicked
+puts "there there there"
+# @products = Product.find(:all, :include => [{:order_details => :order}], :select => " distinct order_details.product_id, products.name, sum(order_details.quantity) as #quantity ", :conditions => [sql], :order => "products.name ASC", :group => "order_details.product_id")
+    @products = OrderDetail.find_by_sql("select distinct order_details.product_id, 
+					  products.name,
+					  products.count_per_pack,
+					  sum(order_details.quantity) as quantity
+				   from orders, order_details, products 
+				   where orders.id = order_details.order_id and 
+					 order_details.product_id = products.id and 
+					 #{sql}
+				   group by order_details.product_id
+				   order by products.name ASC, orders.order_date ASC, orders.id ASC;")
+
+
+    end
+puts "===============#{@products.inspect}"
      respond_to do |format|
       format.html
       format.pdf {
@@ -259,5 +292,194 @@ class InventoriesController < ApplicationController
       }
     end
   end
+
+  def order_levels
+          sql = "select products.id, 
+			products.name, 
+			products.balance,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-01-01' and
+			      DATE(orders.order_date) <= '2012-01-31') as january,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-02-01' and
+			      DATE(orders.order_date) <= '2012-02-31') as february,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-03-01' and
+			      DATE(orders.order_date) <= '2012-03-31') as march,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-04-01' and
+			      DATE(orders.order_date) <= '2012-04-31') as april,
+ 			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-05-01' and
+			      DATE(orders.order_date) <= '2012-05-31') as may,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-06-01' and
+			      DATE(orders.order_date) <= '2012-06-31') as june,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-07-01' and
+			      DATE(orders.order_date) <= '2012-07-31') as july,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-08-01' and
+			      DATE(orders.order_date) <= '2012-08-31') as august,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-09-01' and
+			      DATE(orders.order_date) <= '2012-09-31') as september,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-10-01' and
+			      DATE(orders.order_date) <= '2012-10-31') as october,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-11-01' and
+			      DATE(orders.order_date) <= '2012-11-31') as november,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-12-01' and
+			      DATE(orders.order_date) <= '2012-12-31') as december
+	   from products 
+	   where products.product_code != 'SINCLAIR' 
+	   group by products.id 
+	   ORDER BY products.name asc, products.id"
+   @orders = Product.find_by_sql(sql)
+    respond_to do |format|
+      format.html
+      format.pdf {
+        html = render_to_string(:layout => false, :action => "order_levels.html.erb")
+        kit  = PDFKit.new(html)
+        kit.stylesheets << "#{Rails.root}/app/assets/stylesheets/application.css"
+        send_data(kit.to_pdf, :filename => "Order Level 2012.pdf", :type => 'application/pdf')
+        return
+      }
+    end
+
+  end
+
+  def order_level_paints
+          sql = "select products.id, 
+			products.name, 
+			products.balance,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-01-01' and
+			      DATE(orders.order_date) <= '2012-01-31') as january,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-02-01' and
+			      DATE(orders.order_date) <= '2012-02-31') as february,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-03-01' and
+			      DATE(orders.order_date) <= '2012-03-31') as march,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-04-01' and
+			      DATE(orders.order_date) <= '2012-04-31') as april,
+ 			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-05-01' and
+			      DATE(orders.order_date) <= '2012-05-31') as may,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-06-01' and
+			      DATE(orders.order_date) <= '2012-06-31') as june,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-07-01' and
+			      DATE(orders.order_date) <= '2012-07-31') as july,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-08-01' and
+			      DATE(orders.order_date) <= '2012-08-31') as august,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-09-01' and
+			      DATE(orders.order_date) <= '2012-09-31') as september,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-10-01' and
+			      DATE(orders.order_date) <= '2012-10-31') as october,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-11-01' and
+			      DATE(orders.order_date) <= '2012-11-31') as november,
+			(select sum(order_details.quantity) 
+			from order_details, orders 
+			where order_details.order_id = orders.id and 
+			      products.id = order_details.product_id and 
+			      DATE(orders.order_date) >= '2012-12-01' and
+			      DATE(orders.order_date) <= '2012-12-31') as december
+	   from products 
+	   where products.product_code = 'SINCLAIR' 
+	   group by products.id 
+	   ORDER BY products.name asc, products.id"
+   @orders = Product.find_by_sql(sql)
+    respond_to do |format|
+      format.html
+      format.pdf {
+        html = render_to_string(:layout => false, :action => "order_level_paints.html.erb")
+        kit  = PDFKit.new(html)
+        kit.stylesheets << "#{Rails.root}/app/assets/stylesheets/application.css"
+        send_data(kit.to_pdf, :filename => "Order Level 2012.pdf", :type => 'application/pdf')
+        return
+      }
+    end
+
+  end
+
 
 end

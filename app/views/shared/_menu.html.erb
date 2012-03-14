@@ -11,28 +11,38 @@
 				<% end %>
 			</ul>
 		</li>	
+		<li><%= link_to 'Purchase Orders' %>
+		  <ul>
+		    <li><%= link_to 'Purchase Orders', pos_url %></li>
+		    <li><%= link_to 'Inventory In',   deliveries_url %></li>
+		  </ul>
+		</li>
 		<li><%= link_to 'Transactions' %>
 			<ul>
-				<li><%= link_to 'Inventory In',   deliveries_url %></li>
 				<li><%= link_to 'Orders',   orders_url %></li>
-<li><%= link_to 'Adjustments',   adjustments_url %></li>
+				<li><%= link_to 'Adjustments',   adjustments_url %></li>
 				<li><%= link_to 'Notes', notes_url %></li>				
 			</ul>
 		</li>
                 <li><%= link_to 'Payments' %>
                      <ul>
-                         <li><%= link_to 'Pending', payments_url %></li>				
-			<li><%= link_to 'Paid', paid_url %></li>
+                         <li><%= link_to 'Payments', payments_url %></li>
+                         <li><%= link_to 'Unpaid Orders', pending_payments_url %></li>				
+			<li><%= link_to 'Paid Orders', paid_url %></li>
                      </ul>
                 </li>
 		<li><%= link_to 'Reports' %>
 			<ul>
 				<li><%= link_to 'Inventory', inventories_url %></li>
+				<li><%= link_to 'Paint Inventory', paints_inventories_url %></li>
 				<li><%= link_to 'Replenishment List', order_list_inventories_url %></li>
+				<li><%= link_to 'Order Level', order_levels_inventories_url %></li>
+				<li><%= link_to 'Sinclair Order Level', order_level_paints_inventories_url %></li>
 				<li><%= link_to 'Deliveries By Customer', order_by_customer_inventories_url %></li>
 				<li><%= link_to 'Orders By Date', order_summary_inventories_url %></li>
 
 				<li><%= link_to 'Orders By Product', order_by_product_inventories_url %></li>
+<li><%= link_to 'Payment Report', payment_report_payments_url %></li>
 			</ul>
 		</li>
 	</ul>	

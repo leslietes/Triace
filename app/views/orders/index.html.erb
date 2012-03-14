@@ -27,7 +27,7 @@
         <% end %>
       </td>
 	  <td class="center">
-	  	<%= link_to 'Show', order_url(order) %> <%= link_to 'Edit', edit_order_url(order) %> <%= link_to 'Print', order_url(order, :pdf)%>
+	  	<%= link_to 'Show', order_url(order) %> <%= link_to 'Edit', edit_order_url(order) %> <%= link_to 'Delete', order_url(order), :method => :delete, :confirm => "Are you sure?" %> <%= link_to 'Print', order_url(order, :pdf)%>
 	  </td>
     </tr>
     <% end %>

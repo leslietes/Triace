@@ -41,4 +41,17 @@ class DeliveryDetailsController < ApplicationController
       redirect_to delivery_url(@delivery)
     end
   end
+
+  def destroy
+    @delivery = Delivery.find_by_id(params[:delivery_id])
+    if @delivery
+      @delivery_detail = @delivery.delivery_details.find_by_id(params[:id])   
+      if @delivery_detail.destroy
+        flash[:notice] = "Successfully deleted delivery detail"
+      else
+        flash[:error] = "Error in deleting delivery detail"
+      end
+      redirect_to delivery_url(@delivery)
+    end
+  end
 end

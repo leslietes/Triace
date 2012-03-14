@@ -1,4 +1,5 @@
 class AdjustmentsController < ApplicationController
+  before_filter :login_required
   before_filter :get_products
   before_filter :get_customers
 def index
@@ -14,7 +15,7 @@ def show
   respond_to do |format|
       format.html
       format.pdf {
-        html = render_to_string(:layout => false, :action => "show.html.erb")
+        html = render_to_string(:layout => false, :action => "print.html.erb")
         kit  = PDFKit.new(html)
         kit.stylesheets << "#{Rails.root}/app/assets/stylesheets/application.css"
         send_data(kit.to_pdf, :filename => "Adjustment #{@adjustment.id}.pdf", :type => 'application/pdf')

@@ -1,0 +1,45 @@
+<h2>Sinclair Products Order Level</h2>
+
+<table>
+  <thead>
+    <th>Product</th>
+    <th>Inventory</th>
+    <th>JAN</th>
+    <th>FEB</th>
+    <th>MAR</th>
+    <th>APR</th>
+    <th>MAY</th>
+    <th>JUN</th>
+    <th>JUL</th>
+    <th>AUG</th>
+    <th>SEP</th>
+    <th>OCT</th>
+    <th>NOV</th>
+    <th>DEC</th>
+    <th>Total</th>
+  </thead>
+<tbody>
+  <% @orders.each do |o| %>
+  <% total = 0 %>
+  <tr>
+    <td><%= o.name %></td>
+    <td class="center"><%= o.balance %></td>
+    <td class="center"><%= o.january %></td>
+    <td class="center"><%= o.february %></td>
+    <td class="center"><%= o.march %></td>
+    <td class="center"><%= o.april %></td>
+    <td class="center"><%= o.may %></td>
+    <td class="center"><%= o.june %></td>
+    <td class="center"><%= o.july %></td>
+    <td class="center"><%= o.august %></td>
+    <td class="center"><%= o.september %></td>
+    <td class="center"><%= o.october %></td>
+    <td class="center"><%= o.november %></td>
+    <td class="center"><%= o.december %></td>
+    <td class="center"></td>
+  </tr>
+  <% end %>
+</tbody>
+</table>
+<br/>
+<%= link_to 'Print', order_level_paints_inventories_url(:pdf), :id => "no_print" %>

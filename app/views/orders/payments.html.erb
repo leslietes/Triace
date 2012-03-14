@@ -1,10 +1,12 @@
-<h2>Payments</h2><br/>
+<h2>Pending Payments</h2><br/>
 <table id="payments">
   <thead>
     <th>Delivery Date</th>
 <th>OS No</th>
     <th>Customer</th>
+    <th>Terms</th>
     <th>Total</th>
+    <th>Balance</th>
     <th>Payment Made</th>
   </thead>
   <tbody>
@@ -14,12 +16,14 @@
       <td class="center"><%= display_date(o.delivered_date) %></td>
 <td class="center"><%= o.id%></td>
       <td><%= o.customer.name %></td>
-      <td class="right"><%= number_to_currency(o.total_amount,:unit =>'') %><% total = total + o.total_amount %> </td>
+      <td><%= o.customer.terms %></td>
+      <td class="right"><%= display_amount(o.total_amount) %> </td>
+      <td class="right"><% balance = o.total_amount - o.amount_paid %><%= display_amount(balance) %><% total = total + balance %></td>
       <td class="center">
         <% if o.paid? %>
           <%= display_date(o.pay_date) %>
         <% else %>
-          <%= link_to 'Pay', pay_now_order_url(o) %> <%= link_to 'Show', o %>
+          <%# link_to 'Pay', pay_now_order_url(o) %> <%= link_to 'Show', o %>
         <% end %>
       </td>
     </tr>

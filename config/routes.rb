@@ -9,11 +9,26 @@ Accounting::Application.routes.draw do
     resources :delivery_details
   end
   resources :orders do
+    collection do
+      get 'first'
+    end
     member do
       get 'deliver'
       get 'pay_now'
     end
     resources :order_details
+  end
+
+  resources :payments do
+    collection do
+      get 'payment_report'
+      post 'payment_report'
+    end
+    resources :payment_details
+  end
+
+  resources :pos do
+    resources :po_details
   end
  
   resources :inventories do
@@ -22,6 +37,9 @@ Accounting::Application.routes.draw do
       get 'order_summary'
       get 'order_by_product'
       get 'order_by_customer'
+      get 'paints'
+      get 'order_levels'
+      get 'order_level_paints'
       post 'order_summary'
       post 'order_by_customer'
       post 'order_by_product'
@@ -43,8 +61,10 @@ Accounting::Application.routes.draw do
   end
 
   match 'product/get_price/:id' => "products#get_price", :as => :get_price
+  match 'payments/:id/apply/:order_id' => 'payments#apply_payment', :as => :apply_payment
+  match 'payments/:id/cancel/:order_id' => 'payments#cancel_payment', :as => :cancel_payment
   
-  match 'payments' => 'orders#payments', :as => :payments
+  match 'pending_payments' => 'orders#payments', :as => :pending_payments
   match 'paid' 	   => 'orders#paid', 	 :as => :paid
 
   match 'register' => 'users#create', :as => :register
