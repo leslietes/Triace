@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <th>PO Date</th>
+    <th>PO No</th>
+    <th>Total Amount</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% @pos.each do |c| %>
+    <tr>
+      <td class="center"><%= c.po_date %></td>
+      <td class="center"><%= c.id %></td>
+      <td class="right"><%= number_to_currency(c.total_amount, :unit => '') %></td>
+      <td class="center">
+        <%= link_to 'Show', po_url(c) %>
+        <%= link_to 'Edit', edit_po_url(c) %>
+        <%= link_to 'Delete', po_url(c), :method => :destroy, :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/><%= link_to 'New', new_po_url %>

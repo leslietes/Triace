@@ -1,0 +1,2 @@
+module PoDetailsHelper
+end

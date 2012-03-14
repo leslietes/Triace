@@ -1,0 +1,79 @@
+<div id="panel1">
+<h2 class="center">TRI-ACE MARKETING</h2>
+<p class="center">North National Highway, Maslog, Sibulan, Negros Oriental 6201</p>
+    <h3 class="center" style="border:none;">PURCHASE ORDER</h3>
+    <div class="data">
+        <table id="no_border">
+          <tr>
+              <td style="width:10%"></td>
+	      <td style="width:60%"></td>
+	      <td style="width:10%">Date:</td>
+              <td style="width:20%;border-bottom:1px solid #ccc"><%= display_date(@po.po_date) %></td>
+          </tr>
+           <tr>
+              <td style="width:10%"></td>
+	      <td style="width:60%"></td>
+              <td style="width:10%">PO Number:</td>
+	      <td style="width:20%;border-bottom:1px solid #ccc"><%= @po.id %></td>
+          </tr>
+        </table><br/><br/>
+		
+	<table>
+	  <thead>
+  	  <th>Quantity</th>
+	  <th>Unit</th>
+	  <th>Product</th>
+	  <th>Case Price</th>
+	  <th>Subtotal</th>
+	  <th id="no_print">Actions</th>
+	  </thead>
+	  <tbody>
+	    <% grand_total = 0 %>
+    	    <% @details.each do |d| %>
+                <% if d.id %>
+	  	<tr>
+  		<td class="center"><%= d.quantity %></td>
+		<td class="center"><%= d.unit %></td>
+		<td><%= d.product.name %></td>
+		<td class="right"><%= number_to_currency(d.case_price, :unit => '') %></td>
+		<td class="right"><% total = d.quantity * d.case_price %> <%= number_to_currency(total,:unit => '')%></td>
+		<td class="center" id="no_print">
+		  <%= link_to 'Edit', edit_po_po_detail_url(@po.id, d) %>
+		  <%# link_to 'Delete'  %>
+		</td><% grand_total = grand_total + total %>
+	  	</tr>
+                <% end %>
+	    <% end %>
+     	    
+            <%= form_tag(po_po_details_path(@po)) do %>
+   	    <tr>
+              <%# hidden_field_tag :delivery_id, @delivery.id %><%= hidden_field_tag :count_per_pack, 1 %>
+			  <td style="width:50px" id="no_print"><%= text_field_tag :quantity, '', {:id => 'narrow'} %></td>
+			  <td style="width:50px"  id="no_print"><%= text_field_tag :unit, '', :id => 'narrow' %></td>
+			  <td id="no_print"><%= select_tag :product_id, options_from_collection_for_select(@products,"id","name"), {:include_blank => true, :style => "width:600px"} %></td>
+			  <td style="width:80px" id="no_print"><span id="unit_price"><%= text_field_tag :case_price,  @price, :style => "width:100px" %><% text_field_tag :distributors_price %></span></td>
+			  <td style="width:100px" id="no_print"><%= submit_tag 'Add', :id => 'narrow' %></td>
+            </tr>  
+ 			<% end %>
+     <tr>
+		<td style="border:none;"></td>
+                <td style="border:none;"></td>
+		<td style="border:none;" class="right" colspan="2"><b>Grand Total</b></td>
+		<td style="border:none;" class="right"><b><%= number_to_currency(grand_total, :unit => '') %></b></td>
+	</tr>
+
+		  </tbody>
+		</table>
+    </div>
+
+    <div id="no_print"> 
+        <%= link_to 'Edit', edit_po_url(@po), :class => 'actions' %> |
+        <%= link_to 'Back', pos_url, :class => 'actions' %> |
+        <%= link_to 'Print', po_url(@po,:pdf), :class => 'actions' %>
+    </div>
+
+    <div class="signature">
+      <%= image_tag("#{Rails.root}/app/assets/images/signature.jpg", :alt => "") %>
+    </div>
+</div>
+<div class="clear"></div>
